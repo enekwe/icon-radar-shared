@@ -1,5 +1,5 @@
 {
-  "name": "@icon-radar/shared",
+  "name": "@enekwe/icon-radar-shared",
   "version": "1.0.0",
   "description": "Shared library for Icon Radar microservices with common types, utilities, and middleware",
   "main": "dist/index.js",
