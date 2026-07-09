@@ -5,7 +5,7 @@
 
 import { Request, Response, NextFunction } from 'express';
 import { AuthenticatedRequest } from '../types';
-import { ApiError, isOperationalError, toApiError } from '../utils/errors';
+import { ApiError, toApiError } from '../utils/errors';
 import { logger } from '../utils/logger';
 
 /**
@@ -16,7 +16,7 @@ export function errorHandler(
   error: Error | ApiError,
   req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ): void {
   const authReq = req as AuthenticatedRequest;
   const correlationId = authReq.correlationId;
@@ -28,7 +28,7 @@ export function errorHandler(
   if (apiError.isOperational) {
     logger.warn('Operational error occurred', {
       correlationId,
-      error: apiError.message,
+      errorMessage: apiError instanceof Error ? apiError.message : String(apiError),
       code: apiError.code,
       statusCode: apiError.statusCode,
       path: req.path,
@@ -38,7 +38,7 @@ export function errorHandler(
   } else {
     logger.error('Non-operational error occurred', {
       correlationId,
-      error: apiError.message,
+      errorMessage: apiError instanceof Error ? apiError.message : String(apiError),
       code: apiError.code,
       statusCode: apiError.statusCode,
       stack: apiError.stack,
@@ -56,7 +56,7 @@ export function errorHandler(
  * Not found handler
  * Handles 404 errors for undefined routes
  */
-export function notFoundHandler(req: Request, res: Response, next: NextFunction): void {
+export function notFoundHandler(req: Request, res: Response, _next: NextFunction): void {
   const authReq = req as AuthenticatedRequest;
   const correlationId = authReq.correlationId;
 
@@ -94,8 +94,8 @@ export function asyncHandler<T = any>(
 export function setupUnhandledRejectionHandler(): void {
   process.on('unhandledRejection', (reason: Error, promise: Promise<any>) => {
     logger.error('Unhandled Promise Rejection', {
-      reason: reason.message,
-      stack: reason.stack,
+      errorMessage: reason instanceof Error ? reason.message : String(reason),
+      stack: reason instanceof Error ? reason.stack : undefined,
       promise: promise.toString(),
     });
 
@@ -113,7 +113,7 @@ export function setupUnhandledRejectionHandler(): void {
 export function setupUncaughtExceptionHandler(): void {
   process.on('uncaughtException', (error: Error) => {
     logger.error('Uncaught Exception', {
-      error: error.message,
+      errorMessage: error.message,
       stack: error.stack,
     });
 

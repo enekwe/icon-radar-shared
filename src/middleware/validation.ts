@@ -64,7 +64,7 @@ export function validateRequest<T extends z.ZodType>(
       } else {
         logger.error('Validation middleware error', {
           correlationId,
-          error: error instanceof Error ? error.message : String(error),
+          errorMessage: error instanceof Error ? error.message : String(error),
         });
         const validationError = new ValidationError('Validation error', [], correlationId);
         res.status(validationError.statusCode).json(validationError.toJSON());
@@ -162,7 +162,7 @@ export function validateMultiple(schemas: {
       } else {
         logger.error('Multi-target validation middleware error', {
           correlationId,
-          error: error instanceof Error ? error.message : String(error),
+          errorMessage: error instanceof Error ? error.message : String(error),
         });
         const validationError = new ValidationError('Validation error', [], correlationId);
         res.status(validationError.statusCode).json(validationError.toJSON());
@@ -175,7 +175,7 @@ export function validateMultiple(schemas: {
  * Sanitize request body (strip unknown fields)
  */
 export function sanitizeBody<T extends z.ZodType>(schema: T) {
-  return (req: Request, res: Response, next: NextFunction): void => {
+  return (req: Request, _res: Response, next: NextFunction): void => {
     try {
       const result = schema.parse(req.body);
       req.body = result;
@@ -210,7 +210,8 @@ export function validatePagination(req: Request, res: Response, next: NextFuncti
     return;
   }
 
-  req.query = { ...req.query, ...result.data };
+  // Merge validated pagination data into query
+  Object.assign(req.query, result.data);
   next();
 }
 

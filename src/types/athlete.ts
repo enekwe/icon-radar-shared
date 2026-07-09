@@ -3,7 +3,7 @@
  * Type definitions for athlete-related entities
  */
 
-import { AthleteStatus, RelationshipType, VerificationStatus, SocialHandles, Timestamps, SoftDelete } from './common';
+import { AthleteStatus, RelationshipType, VerificationStatus, SocialHandles, Timestamps } from './common';
 
 export interface Athlete extends Timestamps {
   id: string;

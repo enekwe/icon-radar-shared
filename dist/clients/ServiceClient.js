@@ -203,7 +203,7 @@ class ServiceClient {
                                 service: this.serviceName,
                                 method,
                                 path,
-                                error: error.message,
+                                errorMessage: error instanceof Error ? error.message : String(error),
                             });
                         },
                     });
@@ -220,7 +220,7 @@ class ServiceClient {
             const duration = Date.now() - startTime;
             logger_1.logger.logExternalCall(this.serviceName, `${method} ${path}`, duration, false, {
                 correlationId: options.correlationId,
-                error: error instanceof Error ? error.message : String(error),
+                errorMessage: error instanceof Error ? error.message : String(error),
             });
             throw error;
         }

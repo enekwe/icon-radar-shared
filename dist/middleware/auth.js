@@ -80,14 +80,14 @@ function requireAuth(req, res, next) {
                 correlationId,
                 path: req.path,
                 method: req.method,
-                error: error.message,
+                errorMessage: error instanceof Error ? error.message : String(error),
             });
             res.status(error.statusCode).json(error.toJSON());
         }
         else {
             logger_1.logger.error('Authentication middleware error', {
                 correlationId,
-                error: error instanceof Error ? error.message : String(error),
+                errorMessage: error instanceof Error ? error.message : String(error),
             });
             const authError = new errors_1.UnauthorizedError('Authentication failed', correlationId);
             res.status(authError.statusCode).json(authError.toJSON());
@@ -130,7 +130,7 @@ function requireRole(...roles) {
             else {
                 logger_1.logger.error('Authorization middleware error', {
                     correlationId,
-                    error: error instanceof Error ? error.message : String(error),
+                    errorMessage: error instanceof Error ? error.message : String(error),
                 });
                 const forbiddenError = new errors_1.ForbiddenError('Authorization failed', correlationId);
                 res.status(forbiddenError.statusCode).json(forbiddenError.toJSON());
@@ -138,7 +138,7 @@ function requireRole(...roles) {
         }
     };
 }
-function optionalAuth(req, res, next) {
+function optionalAuth(req, _res, next) {
     const authReq = req;
     try {
         const token = extractToken(req);
@@ -155,7 +155,7 @@ function optionalAuth(req, res, next) {
     catch (error) {
         logger_1.logger.debug('Optional auth failed', {
             correlationId: authReq.correlationId,
-            error: error instanceof Error ? error.message : String(error),
+            errorMessage: error instanceof Error ? error.message : String(error),
         });
         next();
     }
@@ -199,7 +199,7 @@ function requireServiceAuth(req, res, next) {
         else {
             logger_1.logger.error('Service authentication middleware error', {
                 correlationId,
-                error: error instanceof Error ? error.message : String(error),
+                errorMessage: error instanceof Error ? error.message : String(error),
             });
             const forbiddenError = new errors_1.ForbiddenError('Service authentication failed', correlationId);
             res.status(forbiddenError.statusCode).json(forbiddenError.toJSON());
@@ -211,7 +211,7 @@ function generateToken(payload, expiresIn = '24h') {
     if (!secret) {
         throw new Error('JWT_SECRET environment variable is not set');
     }
-    return jsonwebtoken_1.default.sign(payload, secret, { expiresIn });
+    return jsonwebtoken_1.default.sign(payload, secret, { expiresIn: expiresIn });
 }
 function generateRefreshToken(userId) {
     const secret = process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET;

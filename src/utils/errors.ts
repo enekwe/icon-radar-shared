@@ -89,7 +89,7 @@ export class ValidationError extends ApiError {
     this.errors = errors;
   }
 
-  toJSON() {
+  override toJSON() {
     return {
       success: false,
       error: this.message,
@@ -97,6 +97,7 @@ export class ValidationError extends ApiError {
       statusCode: this.statusCode,
       errors: this.errors,
       correlationId: this.correlationId,
+      metadata: { errors: this.errors },
     };
   }
 }

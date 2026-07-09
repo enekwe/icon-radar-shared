@@ -47,7 +47,7 @@ function validateRequest(schema, target = 'body') {
             else {
                 logger_1.logger.error('Validation middleware error', {
                     correlationId,
-                    error: error instanceof Error ? error.message : String(error),
+                    errorMessage: error instanceof Error ? error.message : String(error),
                 });
                 const validationError = new errors_1.ValidationError('Validation error', [], correlationId);
                 res.status(validationError.statusCode).json(validationError.toJSON());
@@ -120,7 +120,7 @@ function validateMultiple(schemas) {
             else {
                 logger_1.logger.error('Multi-target validation middleware error', {
                     correlationId,
-                    error: error instanceof Error ? error.message : String(error),
+                    errorMessage: error instanceof Error ? error.message : String(error),
                 });
                 const validationError = new errors_1.ValidationError('Validation error', [], correlationId);
                 res.status(validationError.statusCode).json(validationError.toJSON());
@@ -129,7 +129,7 @@ function validateMultiple(schemas) {
     };
 }
 function sanitizeBody(schema) {
-    return (req, res, next) => {
+    return (req, _res, next) => {
         try {
             const result = schema.parse(req.body);
             req.body = result;
@@ -154,7 +154,7 @@ function validatePagination(req, res, next) {
         res.status(validationError.statusCode).json(validationError.toJSON());
         return;
     }
-    req.query = { ...req.query, ...result.data };
+    Object.assign(req.query, result.data);
     next();
 }
 function validateUUID(paramName) {

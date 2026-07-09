@@ -53,7 +53,7 @@ class PrismaClientSingleton {
         }).catch((error) => {
             this.isConnected = false;
             logger_1.logger.error('Failed to connect to database', {
-                error: error.message,
+                errorMessage: error instanceof Error ? error.message : String(error),
                 service: process.env.SERVICE_NAME || 'unknown',
             });
         });
@@ -69,7 +69,7 @@ class PrismaClientSingleton {
         catch (error) {
             this.isConnected = false;
             logger_1.logger.error('Database health check failed', {
-                error: error instanceof Error ? error.message : String(error),
+                errorMessage: error instanceof Error ? error.message : String(error),
             });
             return false;
         }
@@ -96,7 +96,7 @@ class PrismaClientSingleton {
         catch (error) {
             logger_1.logger.error('Transaction failed', {
                 correlationId,
-                error: error instanceof Error ? error.message : String(error),
+                errorMessage: error instanceof Error ? error.message : String(error),
             });
             throw new errors_1.DatabaseError('Transaction failed', 'transaction', error, correlationId);
         }
@@ -120,7 +120,7 @@ class PrismaClientSingleton {
                 correlationId,
                 duration,
                 operation,
-                error: error instanceof Error ? error.message : String(error),
+                errorMessage: error instanceof Error ? error.message : String(error),
             });
             throw new errors_1.DatabaseError(`Database operation failed: ${operation}`, operation, error, correlationId);
         }

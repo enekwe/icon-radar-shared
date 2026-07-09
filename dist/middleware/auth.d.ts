@@ -2,9 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import { JWTPayload, UserContext, Role } from '../types';
 export declare function requireAuth(req: Request, res: Response, next: NextFunction): void;
 export declare function requireRole(...roles: Role[]): (req: Request, res: Response, next: NextFunction) => void;
-export declare function optionalAuth(req: Request, res: Response, next: NextFunction): void;
+export declare function optionalAuth(req: Request, _res: Response, next: NextFunction): void;
 export declare function requireServiceAuth(req: Request, res: Response, next: NextFunction): void;
-export declare function generateToken(payload: Omit<JWTPayload, 'iat' | 'exp'>, expiresIn?: string): string;
+export declare function generateToken(payload: Omit<JWTPayload, 'iat' | 'exp'>, expiresIn?: string | number): string;
 export declare function generateRefreshToken(userId: string): string;
 export declare function verifyRefreshToken(token: string): {
     userId: string;

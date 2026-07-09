@@ -3,7 +3,7 @@
  * Base class for inter-service HTTP communication with built-in resilience patterns
  */
 
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { ServiceRequestOptions } from '../types';
 import {
   ExternalAPIError,
@@ -12,7 +12,7 @@ import {
   CircuitBreakerOpenError,
 } from '../utils/errors';
 import { logger } from '../utils/logger';
-import { retry, sleep } from '../utils/helpers';
+import { retry } from '../utils/helpers';
 
 /**
  * Circuit Breaker State
@@ -348,7 +348,7 @@ export class ServiceClient {
                 service: this.serviceName,
                 method,
                 path,
-                error: error.message,
+                errorMessage: error instanceof Error ? error.message : String(error),
               });
             },
           });
@@ -369,7 +369,7 @@ export class ServiceClient {
       const duration = Date.now() - startTime;
       logger.logExternalCall(this.serviceName, `${method} ${path}`, duration, false, {
         correlationId: options.correlationId,
-        error: error instanceof Error ? error.message : String(error),
+        errorMessage: error instanceof Error ? error.message : String(error),
       });
 
       throw error;

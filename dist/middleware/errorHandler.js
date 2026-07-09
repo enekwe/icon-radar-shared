@@ -8,14 +8,14 @@ exports.setupUncaughtExceptionHandler = setupUncaughtExceptionHandler;
 exports.setupErrorHandlers = setupErrorHandlers;
 const errors_1 = require("../utils/errors");
 const logger_1 = require("../utils/logger");
-function errorHandler(error, req, res, next) {
+function errorHandler(error, req, res, _next) {
     const authReq = req;
     const correlationId = authReq.correlationId;
     const apiError = error instanceof errors_1.ApiError ? error : (0, errors_1.toApiError)(error, correlationId);
     if (apiError.isOperational) {
         logger_1.logger.warn('Operational error occurred', {
             correlationId,
-            error: apiError.message,
+            errorMessage: apiError instanceof Error ? apiError.message : String(apiError),
             code: apiError.code,
             statusCode: apiError.statusCode,
             path: req.path,
@@ -26,7 +26,7 @@ function errorHandler(error, req, res, next) {
     else {
         logger_1.logger.error('Non-operational error occurred', {
             correlationId,
-            error: apiError.message,
+            errorMessage: apiError instanceof Error ? apiError.message : String(apiError),
             code: apiError.code,
             statusCode: apiError.statusCode,
             stack: apiError.stack,
@@ -37,7 +37,7 @@ function errorHandler(error, req, res, next) {
     }
     res.status(apiError.statusCode).json(apiError.toJSON());
 }
-function notFoundHandler(req, res, next) {
+function notFoundHandler(req, res, _next) {
     const authReq = req;
     const correlationId = authReq.correlationId;
     logger_1.logger.warn('Route not found', {
@@ -62,8 +62,8 @@ function asyncHandler(fn) {
 function setupUnhandledRejectionHandler() {
     process.on('unhandledRejection', (reason, promise) => {
         logger_1.logger.error('Unhandled Promise Rejection', {
-            reason: reason.message,
-            stack: reason.stack,
+            errorMessage: reason instanceof Error ? reason.message : String(reason),
+            stack: reason instanceof Error ? reason.stack : undefined,
             promise: promise.toString(),
         });
         if (process.env.NODE_ENV === 'production') {
@@ -75,7 +75,7 @@ function setupUnhandledRejectionHandler() {
 function setupUncaughtExceptionHandler() {
     process.on('uncaughtException', (error) => {
         logger_1.logger.error('Uncaught Exception', {
-            error: error.message,
+            errorMessage: error.message,
             stack: error.stack,
         });
         logger_1.logger.error('Shutting down due to uncaught exception...');

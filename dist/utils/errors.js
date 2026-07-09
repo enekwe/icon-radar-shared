@@ -66,6 +66,7 @@ class ValidationError extends ApiError {
             statusCode: this.statusCode,
             errors: this.errors,
             correlationId: this.correlationId,
+            metadata: { errors: this.errors },
         };
     }
 }

@@ -49,6 +49,12 @@ export declare class ValidationError extends ApiError {
             message: string;
         }[];
         correlationId: string | undefined;
+        metadata: {
+            errors: {
+                field: string;
+                message: string;
+            }[];
+        };
     };
 }
 export declare class UnauthorizedError extends ApiError {

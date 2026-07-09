@@ -77,10 +77,10 @@ class PrismaClientSingleton {
       logger.info('Prisma client connected to database', {
         service: process.env.SERVICE_NAME || 'unknown',
       });
-    }).catch((error) => {
+    }).catch((error: unknown) => {
       this.isConnected = false;
       logger.error('Failed to connect to database', {
-        error: error.message,
+        errorMessage: error instanceof Error ? error.message : String(error),
         service: process.env.SERVICE_NAME || 'unknown',
       });
     });
@@ -99,7 +99,7 @@ class PrismaClientSingleton {
     } catch (error) {
       this.isConnected = false;
       logger.error('Database health check failed', {
-        error: error instanceof Error ? error.message : String(error),
+        errorMessage: error instanceof Error ? error.message : String(error),
       });
       return false;
     }
@@ -127,7 +127,7 @@ class PrismaClientSingleton {
 
     try {
       const result = await client.$transaction(
-        async (tx) => {
+        async (tx: any) => {
           return await fn(tx as PrismaClient);
         },
         {
@@ -141,7 +141,7 @@ class PrismaClientSingleton {
     } catch (error) {
       logger.error('Transaction failed', {
         correlationId,
-        error: error instanceof Error ? error.message : String(error),
+        errorMessage: error instanceof Error ? error.message : String(error),
       });
 
       throw new DatabaseError(
@@ -182,7 +182,7 @@ class PrismaClientSingleton {
         correlationId,
         duration,
         operation,
-        error: error instanceof Error ? error.message : String(error),
+        errorMessage: error instanceof Error ? error.message : String(error),
       });
 
       throw new DatabaseError(
