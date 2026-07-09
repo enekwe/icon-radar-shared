@@ -1,0 +1,52 @@
+import { Pagination, PaginationParams } from '../types';
+export declare function generateUUID(): string;
+export declare function sleep(ms: number): Promise<void>;
+export declare function retry<T>(fn: () => Promise<T>, options?: {
+    maxAttempts?: number;
+    initialDelay?: number;
+    maxDelay?: number;
+    factor?: number;
+    onRetry?: (attempt: number, error: Error) => void;
+}): Promise<T>;
+export declare function calculatePagination(total: number, page: number, limit: number): Pagination;
+export declare function parsePaginationParams(query: any): PaginationParams;
+export declare function getPaginationOffset(page: number, limit: number): {
+    skip: number;
+    take: number;
+};
+export declare function sanitizeString(str: string): string;
+export declare function truncate(str: string, maxLength: number, suffix?: string): string;
+export declare function slugify(str: string): string;
+export declare function deepClone<T>(obj: T): T;
+export declare function isEmpty(obj: any): boolean;
+export declare function pick<T extends object, K extends keyof T>(obj: T, keys: K[]): Pick<T, K>;
+export declare function omit<T extends object, K extends keyof T>(obj: T, keys: K[]): Omit<T, K>;
+export declare function groupBy<T>(array: T[], key: keyof T): Record<string, T[]>;
+export declare function unique<T>(array: T[]): T[];
+export declare function chunk<T>(array: T[], size: number): T[][];
+export declare function formatNumber(num: number): string;
+export declare function formatCurrency(amount: number): string;
+export declare function formatPercentage(value: number, decimals?: number): string;
+export declare function percentageChange(oldValue: number, newValue: number): number;
+export declare function formatDate(date: Date): string;
+export declare function parseDate(dateString: string): Date;
+export declare function isWithinLastHours(date: Date, hours: number): boolean;
+export declare function isWithinLast24Hours(date: Date): boolean;
+export declare function getStartOfDay(date: Date): Date;
+export declare function getEndOfDay(date: Date): Date;
+export declare function maskEmail(email: string): string;
+export declare function maskPhone(phone: string): string;
+export declare function randomString(length: number, charset?: string): string;
+export declare function hashString(str: string): number;
+export declare function debounce<T extends (...args: any[]) => any>(func: T, wait: number): (...args: Parameters<T>) => void;
+export declare function throttle<T extends (...args: any[]) => any>(func: T, limit: number): (...args: Parameters<T>) => void;
+export declare function toQueryString(obj: Record<string, any>): string;
+export declare function parseQueryString(queryString: string): Record<string, string>;
+export declare function safeJSONParse<T = any>(str: string): T | null;
+export declare function safeJSONStringify(obj: any): string;
+export declare function measureTime<T>(fn: () => Promise<T>, label?: string): Promise<{
+    result: T;
+    duration: number;
+}>;
+export declare const delay: typeof sleep;
+//# sourceMappingURL=helpers.d.ts.map

@@ -1,0 +1,25 @@
+# Source files
+src/
+tsconfig.json
+
+# Tests
+__tests__/
+jest.config.js
+coverage/
+
+# Development
+.git/
+.vscode/
+.idea/
+*.log
+.env
+.env.local
+.env.test
+
+# Documentation
+*.md
+!README.md
+
+# Build artifacts
+node_modules/
+dist/
