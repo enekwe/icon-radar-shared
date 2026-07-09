@@ -19,7 +19,7 @@ export interface LogMetadata {
     athleteId?: string;
     brandId?: string;
     duration?: number;
-    error?: any;
+    error?: unknown;
     stack?: string;
     [key: string]: any;
 }
@@ -30,7 +30,9 @@ export declare class Logger {
     constructor(options: LoggerOptions);
     child(meta: Record<string, any>): Logger;
     error(message: string, meta?: LogMetadata): void;
+    error(message: string, error: unknown): void;
     warn(message: string, meta?: LogMetadata): void;
+    warn(message: string, error: unknown): void;
     info(message: string, meta?: LogMetadata): void;
     debug(message: string, meta?: LogMetadata): void;
     withCorrelation(correlationId: string): Logger;

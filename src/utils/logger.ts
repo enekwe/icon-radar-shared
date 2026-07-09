@@ -37,7 +37,7 @@ export interface LogMetadata {
   athleteId?: string;
   brandId?: string;
   duration?: number;
-  error?: any;
+  error?: unknown;
   stack?: string;
   [key: string]: any;
 }
@@ -166,17 +166,49 @@ export class Logger {
   }
 
   /**
-   * Log error message
+   * Log error message with metadata
    */
-  error(message: string, meta?: LogMetadata): void {
-    this.logger.error(message, { ...this.defaultMeta, ...meta });
+  error(message: string, meta?: LogMetadata): void;
+  /**
+   * Log error message with error object (will be wrapped as { error })
+   */
+  error(message: string, error: unknown): void;
+  error(message: string, metaOrError?: LogMetadata | unknown): void {
+    // If meta is provided but doesn't look like LogMetadata (i.e., it's a plain error), wrap it
+    const isLogMetadata = metaOrError && typeof metaOrError === 'object' && !Array.isArray(metaOrError) &&
+                          ('correlationId' in metaOrError || 'userId' in metaOrError || 'athleteId' in metaOrError ||
+                           'brandId' in metaOrError || 'duration' in metaOrError || 'error' in metaOrError || 'stack' in metaOrError);
+
+    const metadata = isLogMetadata
+      ? { ...this.defaultMeta, ...metaOrError as LogMetadata }
+      : metaOrError !== undefined
+        ? { ...this.defaultMeta, error: metaOrError }
+        : this.defaultMeta;
+
+    this.logger.error(message, metadata);
   }
 
   /**
-   * Log warning message
+   * Log warning message with metadata
    */
-  warn(message: string, meta?: LogMetadata): void {
-    this.logger.warn(message, { ...this.defaultMeta, ...meta });
+  warn(message: string, meta?: LogMetadata): void;
+  /**
+   * Log warning message with error object (will be wrapped as { error })
+   */
+  warn(message: string, error: unknown): void;
+  warn(message: string, metaOrError?: LogMetadata | unknown): void {
+    // If meta is provided but doesn't look like LogMetadata (i.e., it's a plain error), wrap it
+    const isLogMetadata = metaOrError && typeof metaOrError === 'object' && !Array.isArray(metaOrError) &&
+                          ('correlationId' in metaOrError || 'userId' in metaOrError || 'athleteId' in metaOrError ||
+                           'brandId' in metaOrError || 'duration' in metaOrError || 'error' in metaOrError || 'stack' in metaOrError);
+
+    const metadata = isLogMetadata
+      ? { ...this.defaultMeta, ...metaOrError as LogMetadata }
+      : metaOrError !== undefined
+        ? { ...this.defaultMeta, error: metaOrError }
+        : this.defaultMeta;
+
+    this.logger.warn(message, metadata);
   }
 
   /**

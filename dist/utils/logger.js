@@ -79,11 +79,27 @@ class Logger {
         childLogger.defaultMeta = { ...this.defaultMeta, ...meta };
         return childLogger;
     }
-    error(message, meta) {
-        this.logger.error(message, { ...this.defaultMeta, ...meta });
+    error(message, metaOrError) {
+        const isLogMetadata = metaOrError && typeof metaOrError === 'object' && !Array.isArray(metaOrError) &&
+            ('correlationId' in metaOrError || 'userId' in metaOrError || 'athleteId' in metaOrError ||
+                'brandId' in metaOrError || 'duration' in metaOrError || 'error' in metaOrError || 'stack' in metaOrError);
+        const metadata = isLogMetadata
+            ? { ...this.defaultMeta, ...metaOrError }
+            : metaOrError !== undefined
+                ? { ...this.defaultMeta, error: metaOrError }
+                : this.defaultMeta;
+        this.logger.error(message, metadata);
     }
-    warn(message, meta) {
-        this.logger.warn(message, { ...this.defaultMeta, ...meta });
+    warn(message, metaOrError) {
+        const isLogMetadata = metaOrError && typeof metaOrError === 'object' && !Array.isArray(metaOrError) &&
+            ('correlationId' in metaOrError || 'userId' in metaOrError || 'athleteId' in metaOrError ||
+                'brandId' in metaOrError || 'duration' in metaOrError || 'error' in metaOrError || 'stack' in metaOrError);
+        const metadata = isLogMetadata
+            ? { ...this.defaultMeta, ...metaOrError }
+            : metaOrError !== undefined
+                ? { ...this.defaultMeta, error: metaOrError }
+                : this.defaultMeta;
+        this.logger.warn(message, metadata);
     }
     info(message, meta) {
         this.logger.info(message, { ...this.defaultMeta, ...meta });
