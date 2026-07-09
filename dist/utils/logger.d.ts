@@ -19,7 +19,7 @@ export interface LogMetadata {
     athleteId?: string;
     brandId?: string;
     duration?: number;
-    error?: Error;
+    error?: any;
     stack?: string;
     [key: string]: any;
 }
