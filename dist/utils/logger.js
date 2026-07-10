@@ -185,7 +185,7 @@ exports.logger = new Logger({
     service: process.env.SERVICE_NAME || 'icon-radar',
     level: process.env.LOG_LEVEL || LogLevel.INFO,
     enableConsole: true,
-    enableFile: process.env.NODE_ENV === 'production',
+    enableFile: !!process.env.LOG_DIR,
     fileDir: process.env.LOG_DIR || './logs',
     environment: process.env.NODE_ENV || 'development',
 });
@@ -194,7 +194,7 @@ function createServiceLogger(serviceName) {
         service: serviceName,
         level: process.env.LOG_LEVEL || LogLevel.INFO,
         enableConsole: true,
-        enableFile: process.env.NODE_ENV === 'production',
+        enableFile: !!process.env.LOG_DIR,
         fileDir: process.env.LOG_DIR || './logs',
         environment: process.env.NODE_ENV || 'development',
     });

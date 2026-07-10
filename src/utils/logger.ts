@@ -349,7 +349,7 @@ export const logger = new Logger({
   service: process.env.SERVICE_NAME || 'icon-radar',
   level: (process.env.LOG_LEVEL as LogLevel) || LogLevel.INFO,
   enableConsole: true,
-  enableFile: process.env.NODE_ENV === 'production',
+  enableFile: !!process.env.LOG_DIR, // Only enable file logging when LOG_DIR is explicitly set
   fileDir: process.env.LOG_DIR || './logs',
   environment: process.env.NODE_ENV || 'development',
 });
@@ -362,7 +362,7 @@ export function createServiceLogger(serviceName: string): Logger {
     service: serviceName,
     level: (process.env.LOG_LEVEL as LogLevel) || LogLevel.INFO,
     enableConsole: true,
-    enableFile: process.env.NODE_ENV === 'production',
+    enableFile: !!process.env.LOG_DIR, // Only enable file logging when LOG_DIR is explicitly set
     fileDir: process.env.LOG_DIR || './logs',
     environment: process.env.NODE_ENV || 'development',
   });
