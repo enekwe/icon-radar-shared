@@ -10,8 +10,7 @@
     "test": "jest",
     "lint": "eslint src --ext .ts",
     "format": "prettier --write \"src/**/*.ts\"",
-    "prepublishOnly": "npm run build",
-    "postinstall": "prisma generate || echo 'Prisma generate skipped - no schema found'"
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "icon-radar",
