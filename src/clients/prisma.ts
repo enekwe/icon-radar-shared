@@ -20,7 +20,7 @@ interface PrismaConfig {
 /**
  * Prisma Client Singleton
  */
-class PrismaClientSingleton {
+export class PrismaClientSingleton {
   private static instance: PrismaClient | null = null;
   private static isConnected = false;
 
@@ -205,7 +205,8 @@ class PrismaClientSingleton {
 /**
  * Default Prisma client instance
  */
-export const prisma = PrismaClientSingleton.getInstance();
+// DO NOT automatically instantiate - let each service manage its own Prisma instance
+// This prevents errors in services that don't use a database (like external-apis)
 
 /**
  * Create Prisma client with custom configuration
@@ -264,4 +265,4 @@ export function setupDatabaseShutdownHandlers(): void {
   process.on('beforeExit', () => shutdown('beforeExit'));
 }
 
-export default prisma;
+// Services should create their own Prisma instance using PrismaClientSingleton.getInstance()

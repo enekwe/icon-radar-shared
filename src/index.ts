@@ -15,7 +15,16 @@ export * from './config';
 
 // Re-export commonly used items for convenience
 export { logger, createServiceLogger, Logger, LogLevel } from './utils/logger';
-export { prisma, createPrismaClient, transaction, query } from './clients/prisma';
+// Export Prisma utilities but not an instance - services should create their own
+export {
+  PrismaClientSingleton,
+  createPrismaClient,
+  transaction,
+  query,
+  isDatabaseHealthy,
+  disconnectDatabase,
+  setupDatabaseShutdownHandlers
+} from './clients/prisma';
 export { ServiceClient, createServiceClient } from './clients/ServiceClient';
 
 // Error classes

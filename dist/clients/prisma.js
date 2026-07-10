@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.prisma = void 0;
+exports.PrismaClientSingleton = void 0;
 exports.createPrismaClient = createPrismaClient;
 exports.transaction = transaction;
 exports.query = query;
@@ -129,7 +129,7 @@ class PrismaClientSingleton {
         return this.isConnected;
     }
 }
-exports.prisma = PrismaClientSingleton.getInstance();
+exports.PrismaClientSingleton = PrismaClientSingleton;
 function createPrismaClient(config = {}) {
     return PrismaClientSingleton.getInstance(config);
 }
@@ -155,4 +155,3 @@ function setupDatabaseShutdownHandlers() {
     process.on('SIGTERM', () => shutdown('SIGTERM'));
     process.on('beforeExit', () => shutdown('beforeExit'));
 }
-exports.default = exports.prisma;

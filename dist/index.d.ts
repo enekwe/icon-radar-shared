@@ -4,7 +4,7 @@ export * from './middleware';
 export * from './clients';
 export * from './config';
 export { logger, createServiceLogger, Logger, LogLevel } from './utils/logger';
-export { prisma, createPrismaClient, transaction, query } from './clients/prisma';
+export { PrismaClientSingleton, createPrismaClient, transaction, query, isDatabaseHealthy, disconnectDatabase, setupDatabaseShutdownHandlers } from './clients/prisma';
 export { ServiceClient, createServiceClient } from './clients/ServiceClient';
 export { ApiError, BadRequestError, ValidationError, UnauthorizedError, ForbiddenError, NotFoundError, ConflictError, InternalServerError, ExternalAPIError, DatabaseError, ErrorFactory, } from './utils/errors';
 export { Validators, UserSchemas, AthleteSchemas, BrandSchemas, RelationshipSchemas, JobSchemas, SearchSchemas, AnalyticsSchemas, validate, safeValidate, transformZodErrors, } from './utils/validators';
