@@ -48,19 +48,29 @@ export const SERVICE_NAMES = {
 } as const;
 
 /**
- * Service Ports
+ * Service Ports (local development)
+ * In production on Railway, each service gets its own URL via env vars.
+ * Athlete, Brand, Analytics, Search, Upload, and Auth are all handled
+ * by the main backend service. They were previously separate
+ * microservices on ports 3002-3006 but have been consolidated.
  */
 export const SERVICE_PORTS = {
   API_GATEWAY: 3000,
-  AUTH_SERVICE: 3001,
-  ATHLETE_SERVICE: 3002,
-  BRAND_SERVICE: 3003,
-  ANALYTICS_SERVICE: 3004,
-  SEARCH_SERVICE: 3005,
-  UPLOAD_SERVICE: 3006,
+  BACKEND: 3001,        // Main backend handles: auth, athletes, brands, analytics, search, upload
   JOB_SERVICE: 3007,
   EXTERNAL_APIS: 3008,
   AI_AGENTS: 3009,
+} as const;
+
+/**
+ * Production Service URLs (Railway)
+ * Used as fallback defaults when env vars are not set
+ */
+export const PRODUCTION_SERVICE_URLS = {
+  BACKEND: 'https://api.radar.passbook.vc',
+  JOB_SERVICE: 'https://icon-radar-job-service.up.railway.app',
+  AI_AGENTS: 'https://icon-radar-ai-agents.up.railway.app',
+  EXTERNAL_APIS: 'https://icon-radar-external-apis.up.railway.app',
 } as const;
 
 /**
