@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `@icon-radar/shared` library is now complete and production-ready. This shared library provides the foundation for all Icon Radar microservices with common types, utilities, middleware, and clients.
+The `@enekwe/icon-radar-shared` library is now complete and production-ready. This shared library provides the foundation for all Icon Radar microservices with common types, utilities, middleware, and clients.
 
 ## What Was Implemented
 
@@ -190,7 +190,7 @@ Comprehensive test suite:
 Install in any microservice:
 
 ```bash
-npm install @icon-radar/shared
+npm install @enekwe/icon-radar-shared
 ```
 
 Then import and use:
@@ -203,7 +203,7 @@ import {
   NotFoundError,
   createServiceClient,
   prisma,
-} from '@icon-radar/shared';
+} from '@enekwe/icon-radar-shared';
 ```
 
 ## File Structure
@@ -240,7 +240,7 @@ icon-radar-shared/
 
 1. Build the library: `npm run build`
 2. Run tests: `npm test`
-3. Use in microservices by installing `@icon-radar/shared`
+3. Use in microservices by installing `@enekwe/icon-radar-shared`
 4. Extend as needed for additional functionality
 
 ## Notes

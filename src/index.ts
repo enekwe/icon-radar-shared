@@ -1,5 +1,5 @@
 /**
- * @icon-radar/shared
+ * @enekwe/icon-radar-shared
  * Shared library for Icon Radar microservices
  *
  * This package provides common types, utilities, middleware, and clients

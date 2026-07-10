@@ -1,11 +1,11 @@
-# @icon-radar/shared
+# @enekwe/icon-radar-shared
 
 Shared library for Icon Radar microservices providing common types, utilities, middleware, and clients.
 
 ## Installation
 
 ```bash
-npm install @icon-radar/shared
+npm install @enekwe/icon-radar-shared
 ```
 
 ## Features
@@ -25,7 +25,7 @@ npm install @icon-radar/shared
 ### Logger
 
 ```typescript
-import { logger, createServiceLogger } from '@icon-radar/shared';
+import { logger, createServiceLogger } from '@enekwe/icon-radar-shared';
 
 // Use default logger
 logger.info('Application started', { port: 3000 });
@@ -62,7 +62,7 @@ import {
   ErrorFactory,
   errorHandler,
   asyncHandler,
-} from '@icon-radar/shared';
+} from '@enekwe/icon-radar-shared';
 
 // Throw errors
 throw new NotFoundError('Athlete not found', correlationId);
@@ -98,7 +98,7 @@ import {
   validateParams,
   AthleteSchemas,
   UserSchemas,
-} from '@icon-radar/shared';
+} from '@enekwe/icon-radar-shared';
 
 // Validate request body
 app.post('/athletes', validateBody(AthleteSchemas.createAthlete), createAthlete);
@@ -139,7 +139,7 @@ import {
   requireServiceAuth,
   generateToken,
   generateRefreshToken,
-} from '@icon-radar/shared';
+} from '@enekwe/icon-radar-shared';
 
 // Require authentication
 app.get('/profile', requireAuth, getProfile);
@@ -169,7 +169,7 @@ const refreshToken = generateRefreshToken(user.id);
 ### Service Client
 
 ```typescript
-import { createServiceClient } from '@icon-radar/shared';
+import { createServiceClient } from '@enekwe/icon-radar-shared';
 
 // Create service client
 const athleteService = createServiceClient({
@@ -215,7 +215,7 @@ athleteService.clearCache();
 ### Prisma Client
 
 ```typescript
-import { prisma, transaction, query } from '@icon-radar/shared';
+import { prisma, transaction, query } from '@enekwe/icon-radar-shared';
 
 // Use Prisma client directly
 const athletes = await prisma.athlete.findMany({
@@ -255,7 +255,7 @@ const athlete = await query(
 ### CORS Middleware
 
 ```typescript
-import { cors, devCors, prodCors, envCors, autoCors } from '@icon-radar/shared';
+import { cors, devCors, prodCors, envCors, autoCors } from '@enekwe/icon-radar-shared';
 
 // Development (allow all)
 app.use(devCors());
@@ -284,7 +284,7 @@ app.use(
 ### Request Logging
 
 ```typescript
-import { correlationId, requestLogger } from '@icon-radar/shared';
+import { correlationId, requestLogger } from '@enekwe/icon-radar-shared';
 
 // Add correlation ID to all requests
 app.use(correlationId);
@@ -314,7 +314,7 @@ import {
   formatPercentage,
   maskEmail,
   sleep,
-} from '@icon-radar/shared';
+} from '@enekwe/icon-radar-shared';
 
 // Generate UUID
 const id = generateUUID();
@@ -369,7 +369,7 @@ import {
   getEnv,
   requireEnv,
   isProduction,
-} from '@icon-radar/shared';
+} from '@enekwe/icon-radar-shared';
 
 // HTTP status codes
 res.status(HTTP_STATUS.NOT_FOUND).json({ error: 'Not found' });
@@ -424,7 +424,7 @@ import {
   Validators,
   prisma,
   HTTP_STATUS,
-} from '@icon-radar/shared';
+} from '@enekwe/icon-radar-shared';
 import { z } from 'zod';
 
 const app = express();
@@ -566,7 +566,7 @@ import type {
   UserContext,
   ServiceResponse,
   Pagination,
-} from '@icon-radar/shared';
+} from '@enekwe/icon-radar-shared';
 ```
 
 ## Testing
