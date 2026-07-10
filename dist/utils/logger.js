@@ -28,6 +28,14 @@ const devFormat = winston_1.default.format.printf(({ level, message, timestamp, 
 });
 const prodFormat = winston_1.default.format.combine(winston_1.default.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), winston_1.default.format.errors({ stack: true }), winston_1.default.format.json());
 const developmentFormat = winston_1.default.format.combine(winston_1.default.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), winston_1.default.format.colorize(), winston_1.default.format.errors({ stack: true }), devFormat);
+function isCloudEnvironment() {
+    return !!(process.env.RAILWAY_ENVIRONMENT ||
+        process.env.RENDER ||
+        process.env.FLY_APP_NAME ||
+        process.env.HEROKU_APP_NAME ||
+        process.env.K_SERVICE ||
+        process.env.AWS_EXECUTION_ENV);
+}
 function createLogger(options) {
     const { service, level = LogLevel.INFO, enableConsole = true, enableFile = false, fileDir = './logs', environment = process.env.NODE_ENV || 'development', } = options;
     const transports = [];
@@ -36,7 +44,8 @@ function createLogger(options) {
             format: environment === 'production' ? prodFormat : developmentFormat,
         }));
     }
-    if (enableFile) {
+    const shouldEnableFileLogging = enableFile && !isCloudEnvironment();
+    if (shouldEnableFileLogging) {
         transports.push(new winston_1.default.transports.File({
             filename: `${fileDir}/error.log`,
             level: 'error',

@@ -80,6 +80,20 @@ const developmentFormat = winston.format.combine(
 );
 
 /**
+ * Check if running in a cloud/containerized environment where file logging should be disabled
+ */
+function isCloudEnvironment(): boolean {
+  return !!(
+    process.env.RAILWAY_ENVIRONMENT ||
+    process.env.RENDER ||
+    process.env.FLY_APP_NAME ||
+    process.env.HEROKU_APP_NAME ||
+    process.env.K_SERVICE || // Google Cloud Run
+    process.env.AWS_EXECUTION_ENV // AWS Lambda/ECS
+  );
+}
+
+/**
  * Create Winston logger instance
  */
 export function createLogger(options: LoggerOptions): winston.Logger {
@@ -104,7 +118,10 @@ export function createLogger(options: LoggerOptions): winston.Logger {
   }
 
   // File transports for production
-  if (enableFile) {
+  // Disable file logging in cloud environments where filesystem is typically read-only
+  const shouldEnableFileLogging = enableFile && !isCloudEnvironment();
+
+  if (shouldEnableFileLogging) {
     // Error log file
     transports.push(
       new winston.transports.File({
